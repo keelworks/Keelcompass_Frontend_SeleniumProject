@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="HerBalanceSuite" parallel="tests" thread-count="5">
+	<!-- “Temporarily disabled Edge/Firefox in suite for local driver stability — preserved for re-enable”
+	-->
+	<test name="FirefoxTests">
+		<parameter name="browserType" value="firefox" />
+		<classes>
+			<class name="testRunner.Runner" />
+		</classes>
+	</test>
+	
+	<test name="EdgeTests">
+		<parameter name="browserType" value="edge" />
+		<classes>
+			<class name="testRunner.Runner" />
+		</classes>
+	</test>
+
+	<test name="ChromeTests">
+		<parameter name="browserType" value="chrome" />
+		<classes>
+			<class name="testRunner.Runner" />
+		</classes>
+	</test>
+
+</suite>
