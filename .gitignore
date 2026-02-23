@@ -1,0 +1,9 @@
+# Eclipse workspace metadata
+.metadata/
+
+# Eclipse project files
+*.log
+.classpath
+.project
+.settings/
+bin/
