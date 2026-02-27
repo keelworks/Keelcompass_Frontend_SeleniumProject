@@ -1,68 +1,69 @@
 package driverfactory;
 
+import java.time.Duration;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-	import java.time.Duration;
+import utils.ConfigReader;
+import utils.LoggerFactory;
 
-	import org.openqa.selenium.WebDriver;
-	import org.openqa.selenium.chrome.ChromeDriver;
-	import org.openqa.selenium.edge.EdgeDriver;
-	import org.openqa.selenium.firefox.FirefoxDriver;
+public class DriverManager {
+	private static final ThreadLocal<WebDriver> testdriver = new ThreadLocal<>();
+	private static final ThreadLocal<String> driverbrowser = new ThreadLocal<>();
 
-	import utils.ConfigReader;
-	import utils.LoggerFactory;
+	private static WebDriver driver;
 
-	public class DriverManager {
-		private static final ThreadLocal<WebDriver> testdriver = new ThreadLocal<>();
-		private static final ThreadLocal<String> driverbrowser = new ThreadLocal<>();
+	public static void initBrowser() {
 
-		private static WebDriver driver;
+		String browserType = null;
+		BrowserOptions browserOptions = new BrowserOptions();
 
-		public static void initBrowser() {
+		browserType = driverbrowser.get();
 
-			String browserType = null;
-			BrowserOptions browserOptions = new BrowserOptions();
+		if (browserType == null) {
 
-			browserType = driverbrowser.get();
-
-			if (browserType == null) {
-
-				browserType = ConfigReader.getProperty("browser");
-				System.out.println("its null");
-			}
-
-			switch (browserType) {
-				case "chrome" :
-					testdriver.set(new ChromeDriver(browserOptions.chromeOption()));
-					break;
-				case "edge" :
-					testdriver.set(new EdgeDriver(browserOptions.edgeOption()));
-					break;
-				case "firefox" :
-					testdriver
-							.set(new FirefoxDriver(browserOptions.firefoxOption()));
-					break;
-				default :
-					LoggerFactory.getLogger()
-							.error("Unexpected value for browser: {}", browserType);
-					throw new IllegalStateException(
-							"Unexpected value for browserType: " + browserType);
-			}
-			driver = testdriver.get();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-			driver.manage().window().maximize();
-
+			browserType = ConfigReader.getProperty("browser");
+			System.out.println("its null");
 		}
 
-		public static WebDriver getDriver() {
-			return testdriver.get();
+		switch (browserType) {
+		case "chrome":
+			testdriver.set(new ChromeDriver(browserOptions.chromeOption()));
+			break;
+		case "edge":
+			testdriver.set(new EdgeDriver(browserOptions.edgeOption()));
+			break;
+		case "firefox":
+			testdriver.set(new FirefoxDriver(browserOptions.firefoxOption()));
+			break;
+		default:
+			LoggerFactory.getLogger().error("Unexpected value for browser: {}", browserType);
+			throw new IllegalStateException("Unexpected value for browserType: " + browserType);
 		}
-
-		public static void setBrowser(String browser) {
-			driverbrowser.set(browser);
-		}
+		driver = testdriver.get();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+		driver.manage().window().maximize();
 
 	}
 
+	public static WebDriver getDriver() {
+		return testdriver.get();
+	}
 
+	public static void setBrowser(String browser) {
+		driverbrowser.set(browser);
+	}
+
+	public static void quitDriver() {
+		if (testdriver.get() != null) {
+			testdriver.get().quit();
+			testdriver.remove();
+			driverbrowser.remove();
+		}
+	}
+
+}

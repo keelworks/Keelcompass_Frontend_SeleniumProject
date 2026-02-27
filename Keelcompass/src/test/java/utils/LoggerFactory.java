@@ -7,7 +7,7 @@ public class LoggerFactory {
 	static Logger logger;
 
 	public static Logger getLogger() {
-		logger = LogManager.getLogger(); 
+		logger = LogManager.getLogger();
 		return logger;
 	}
 }
