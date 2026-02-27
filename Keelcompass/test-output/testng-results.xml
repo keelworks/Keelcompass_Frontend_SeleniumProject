@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="0" passed="0" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2026-02-23T09:35:04 CST" name="RunTest" finished-at="2026-02-23T09:35:04 CST" duration-ms="17">
+  <suite started-at="2026-02-27T14:13:22 GMT-05:00" name="Default suite" finished-at="2026-02-27T14:13:29 GMT-05:00" duration-ms="6535">
     <groups>
     </groups>
-    <test started-at="2026-02-23T09:35:04 CST" name="AllTestsFirefox" finished-at="2026-02-23T09:35:04 CST" duration-ms="17">
-    </test> <!-- AllTestsFirefox -->
-    <test started-at="2026-02-23T09:35:04 CST" name="AllTests" finished-at="2026-02-23T09:35:04 CST" duration-ms="17">
-    </test> <!-- AllTests -->
-  </suite> <!-- RunTest -->
+    <test started-at="2026-02-27T14:13:22 GMT-05:00" name="Default test" finished-at="2026-02-27T14:13:29 GMT-05:00" duration-ms="6535">
+      <class name="testcases.LoginTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcases.LoginTest@7a527389]" started-at="2026-02-27T14:13:22 GMT-05:00" name="setUp" finished-at="2026-02-27T14:13:25 GMT-05:00" duration-ms="3354" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="loginWithValidCredentials()[pri:0, instance:testcases.LoginTest@7a527389]" started-at="2026-02-27T14:13:26 GMT-05:00" name="loginWithValidCredentials" finished-at="2026-02-27T14:13:28 GMT-05:00" duration-ms="2574" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginWithValidCredentials -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcases.LoginTest@7a527389]" started-at="2026-02-27T14:13:28 GMT-05:00" name="tearDown" finished-at="2026-02-27T14:13:29 GMT-05:00" duration-ms="317" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- testcases.LoginTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
 </testng-results>
