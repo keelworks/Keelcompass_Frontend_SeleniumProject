@@ -25,7 +25,7 @@ public class HomePage {
 
     // ---------- Page Elements ----------
 
-    @FindBy(xpath = "//h3[contains(text(),'KCompass')]")
+    @FindBy(xpath = "//h1[contains(text(),'KCompass')]")
     private WebElement kcompassHeader;
 
     @FindBy(xpath = "//h3[normalize-space()='KCompass']")
@@ -96,9 +96,9 @@ public class HomePage {
     }
 
     public void selectCategory(String categoryName) {
-        clickCategoryDropdown();
+        //clickCategoryDropdown();
         // Dynamic locator to find the checkbox by the text provided in the parameter
-        String xpath = String.format("//label[contains(.,'%s')]/preceding-sibling::input[@type='checkbox']", categoryName);
+        String xpath = String.format("//span[contains(text(),'%s')]", categoryName);
         WebElement checkbox = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
         
         if (!checkbox.isSelected()) {
@@ -139,14 +139,15 @@ public class HomePage {
     private WebElement categoryDropdownBtn;
 
     // The menu that appears after clicking (using the logic from your error log)
-    @FindBy(xpath = "//div[contains(@class,'absolute')]//ul | //div[@role='menu']")
+    @FindBy(xpath = "(//div[contains(@class,'absolute')]//label//input)[1]")
     private WebElement categoryMenu;
 
    
 
     public void clickCategoryDropdown() {
         // 1. Wait for the button to be clickable and click it
-        wait.until(ExpectedConditions.elementToBeClickable(categoryDropdownBtn)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(categoryDropdownBtn));
+        categoryDropdownBtn.click();
         
         // 2. Wait for the menu to actually appear in the DOM/Visibility
         wait.until(ExpectedConditions.visibilityOf(categoryMenu));
