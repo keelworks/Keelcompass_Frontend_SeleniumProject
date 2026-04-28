@@ -70,7 +70,6 @@ public class KCompassAskQuestionsPage {
 	@FindBy(xpath = "//button[@title='Remove attachment']")
 	private WebElement removeAttachment;
 
-	//@FindBy(xpath = "//*[@title='Add emoji']")
 	@FindBy(xpath = "//*[@title='Attach emoji']")
 	private WebElement addEmojiBtn;
 
