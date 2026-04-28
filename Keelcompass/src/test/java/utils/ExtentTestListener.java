@@ -1,19 +1,19 @@
 package utils;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.testng.*;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
 
-import com.aventstack.extentreports.*;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 import driverfactory.DriverManager;
@@ -22,7 +22,6 @@ public class ExtentTestListener implements ITestListener, ISuiteListener {
 
     private static ExtentReports extent;
     private static final ThreadLocal<ExtentTest> test = new ThreadLocal<>();
-
     private static String reportPath;
 
     @Override
@@ -54,46 +53,80 @@ public class ExtentTestListener implements ITestListener, ISuiteListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        String testName = result.getMethod().getMethodName();
-        String className = result.getTestClass().getName();
+        String methodName = result.getMethod().getMethodName();
+        Object[] params = result.getParameters();
 
-        ExtentTest extentTest = extent.createTest(testName).assignCategory(className);
+        String testName = methodName;
+        if (params != null && params.length > 0 && params[0] != null) {
+            testName = methodName + " - " + params[0].toString();
+        }
+
+        ExtentTest extentTest = extent.createTest(testName);
         test.set(extentTest);
         ExtentTestManager.setTest(extentTest);
 
-        test.get().info("Test started");
+        extentTest.info("Test started: " + testName);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        test.get().pass("Test passed");
+        ExtentTest extentTest = test.get();
+        if (extentTest != null) {
+            extentTest.pass("Test passed");
+        }
+        cleanupThreadLocal();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        Throwable t = result.getThrowable();
-        if (t != null) test.get().fail(t);
+        ExtentTest extentTest = test.get();
 
-        // Screenshot attach
-        WebDriver driver = DriverManager.getDriver();
-        if (driver != null) {
-            try {
-                String base64 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
-                test.get().addScreenCaptureFromBase64String(base64, "Failure Screenshot");
-            } catch (Exception e) {
-                test.get().warning("Could not capture screenshot: " + e.getMessage());
+        if (extentTest != null) {
+            Throwable throwable = result.getThrowable();
+            if (throwable != null) {
+                extentTest.fail(throwable);
+            } else {
+                extentTest.fail("Test failed");
             }
+
+            WebDriver driver = DriverManager.getDriver();
+            if (driver != null) {
+                try {
+                    String base64 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+                    extentTest.addScreenCaptureFromBase64String(base64, "Failure Screenshot");
+                } catch (Exception e) {
+                    extentTest.warning("Could not capture screenshot: " + e.getMessage());
+                }
+            }
+        } else {
+            System.out.println("ExtentTest is null in onTestFailure for: " + result.getName());
         }
+
+        cleanupThreadLocal();
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        test.get().skip("Test skipped");
-        if (result.getThrowable() != null) test.get().skip(result.getThrowable());
+        ExtentTest extentTest = test.get();
+        if (extentTest != null) {
+            extentTest.skip("Test skipped");
+            if (result.getThrowable() != null) {
+                extentTest.skip(result.getThrowable());
+            }
+        }
+        cleanupThreadLocal();
     }
 
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-        test.get().warning("Test partially failed (within success percentage).");
+        ExtentTest extentTest = test.get();
+        if (extentTest != null) {
+            extentTest.warning("Test partially failed (within success percentage).");
+        }
+    }
+
+    private void cleanupThreadLocal() {
+        test.remove();
+        ExtentTestManager.removeTest();
     }
 }

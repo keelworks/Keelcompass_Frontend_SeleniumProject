@@ -83,4 +83,28 @@ public class ExcelReader {
 		return data;
 	}
 
+	public Object[][] getSheetData(String sheetName) {
+	    Sheet sheet = workbook.getSheet(sheetName);
+	    int rowCount = sheet.getLastRowNum();
+	    int colCount = sheet.getRow(0).getLastCellNum();
+
+	    Object[][] data = new Object[rowCount][colCount];
+
+	    for (int i = 1; i <= rowCount; i++) {
+	        Row row = sheet.getRow(i);
+	        for (int j = 0; j < colCount; j++) {
+	            String value = "";
+	            if (row != null && row.getCell(j) != null) {
+	                value = formatter.formatCellValue(row.getCell(j)).trim();
+	            }
+	            if ("null".equalsIgnoreCase(value)) {
+	                value = "";
+	            }
+	            data[i - 1][j] = value;
+	        }
+	    }
+	    return data;
+	}
+
+
 }
