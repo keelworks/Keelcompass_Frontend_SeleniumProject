@@ -34,48 +34,9 @@ Category	Technology
 🌐 Version Control	Git / GitHub
 🏗️ Framework Design	Page Object Model (POM)
 🏗️ Framework Architecture
-seleniumproject
-│
-├── 📁 src/main/java
-│
-├── 📁 src/main/resources
-│
-├── 📁 src/test/java
-│   │
-│   ├── 📁 base
-│   │   └── BaseTest.java
-│   │
-│   ├── 📁 com.pages
-│   │   ├── LoginPage.java
-│   │   ├── HomePage.java
-│   │   └── KCompassAskQuestionsPage.java
-│   │
-│   ├── 📁 driverfactory
-│   │   ├── DriverManager.java
-│   │   └── BrowserOptions.java
-│   │
-│   ├── 📁 testcases
-│   │   ├── LoginTest.java
-│   │   ├── HomePageTest.java
-│   │   ├── LoginScenarios.java
-│   │   └── KCompassAskQuestionsTest.java
-│   │
-│   └── 📁 utils
-│       ├── ConfigReader.java
-│       ├── ExcelReader.java
-│       ├── ExtentTestListener.java
-│       ├── ExtentTestManager.java
-│       ├── LoggerFactory.java
-│       ├── RetryAnalyzer.java
-│       └── RetryListener.java
-│
-├── 📁 src/test/resources
-│
-├── 📄 pom.xml
-│
-└── 📄 testng.xml
-✨ Key Features
-🤖 UI Automation
+<img width="1199" height="1312" alt="image" src="https://github.com/user-attachments/assets/7038e7c6-a865-4fe5-84cd-f434bb02dc77" />
+
+
 
 Automates end-to-end frontend workflows using Selenium WebDriver.
 
